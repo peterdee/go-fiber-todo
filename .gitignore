@@ -3,3 +3,6 @@ tmp/
 
 # Environment
 .env
+
+# Launching with AIR
+run.sh

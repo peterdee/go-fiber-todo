@@ -1,17 +1,16 @@
 package main
 
 import (
+	"log"
 	"strconv"
 
 	"github.com/gofiber/fiber"
 	"github.com/gofiber/fiber/middleware"
-)
+	"github.com/joho/godotenv"
 
-type Todo struct {
-	Completed bool   `json:"completed"`
-	Id        string `json:"id"`
-	Text      string `json:"text"`
-}
+	"go-fiber-todo/configuration"
+	"go-fiber-todo/utilities"
+)
 
 var todos = []Todo{
 	{
@@ -62,17 +61,22 @@ func AddTodo(ctx *fiber.Ctx) {
 }
 
 func GetAll(ctx *fiber.Ctx) {
-	ctx.Status(fiber.StatusOK).JSON(todos)
+	utilities.Response(utilities.ResponseParams{
+		Ctx:    ctx,
+		Data:   todos,
+		Info:   "OK",
+		Status: fiber.StatusOK,
+	})
 }
 
 func GetSingle(ctx *fiber.Ctx) {
 	idString := ctx.Params("id")
 	if idString == "" {
-		ctx.Status(fiber.StatusBadRequest).JSON(
-			fiber.Map{
-				"info": "MISSING_DATA",
-			},
-		)
+		utilities.Response(utilities.ResponseParams{
+			Ctx:    ctx,
+			Info:   "MISSING_DATA",
+			Status: fiber.StatusBadRequest,
+		})
 		return
 	}
 
@@ -85,15 +89,21 @@ func GetSingle(ctx *fiber.Ctx) {
 	}
 
 	if element.Id == "" {
-		ctx.Status(fiber.StatusBadRequest).JSON(
-			fiber.Map{
-				"info": "TODO_NOT_FOUND",
-			},
-		)
+		utilities.Response(utilities.ResponseParams{
+			Ctx:    ctx,
+			Info:   "TODO_NOT_FOUND",
+			Status: fiber.StatusNotFound,
+		})
 		return
 	}
 
-	ctx.Status(fiber.StatusOK).JSON(element)
+	utilities.Response(utilities.ResponseParams{
+		Ctx:    ctx,
+		Data:   element,
+		Info:   "OK",
+		Status: fiber.StatusOK,
+	})
+	return
 }
 
 func UpdateSingle(ctx *fiber.Ctx) {
@@ -145,10 +155,22 @@ func UpdateSingle(ctx *fiber.Ctx) {
 }
 
 func HandleIndex(ctx *fiber.Ctx) {
-	ctx.Send("Running")
+	utilities.Response(utilities.ResponseParams{
+		Ctx:    ctx,
+		Info:   "OK",
+		Status: fiber.StatusOK,
+	})
+	return
 }
 
 func main() {
+	// load environment variables
+	envError := godotenv.Load()
+	if envError != nil {
+		log.Fatal(envError)
+		return
+	}
+
 	app := fiber.New()
 
 	app.Use(middleware.Logger())
@@ -159,8 +181,15 @@ func main() {
 	app.Get("/single/:id", GetSingle)
 	app.Patch("/single/:id", UpdateSingle)
 
-	error := app.Listen(3000)
-	if error != nil {
-		panic(error)
+	// get the port
+	port, portError := strconv.Atoi(configuration.Port)
+	if portError != nil {
+		port = 5511
+	}
+
+	// launch the app
+	launchError := app.Listen(port)
+	if launchError != nil {
+		panic(launchError)
 	}
 }

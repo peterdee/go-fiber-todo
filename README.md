@@ -14,5 +14,5 @@ cd ./go-fiber-todo
 ### Launch
 
 ```shell script
-go run main.go
+go run *.go
 ```
