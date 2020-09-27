@@ -1,8 +1,10 @@
 ## go-fiber-todo
 
-A simple TODO-application with Go
+A simple TODO application with Go
 
-Stack: Fiber, Golang
+Stack: [Fiber](https://gofiber.io/), [Golang](https://golang.org/), [MongoDB](https://www.mongodb.com/)
+
+DEV: http://localhost:5511
 
 ### Deploy
 
@@ -10,6 +12,10 @@ Stack: Fiber, Golang
 git clone https://github.com/peterdee/go-fiber-todo
 cd ./go-fiber-todo
 ```
+
+### Environment variables
+
+The `.env` file is required, see the [.env.example](.env.example) file for details
 
 ### Launch
 

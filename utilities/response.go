@@ -1,14 +1,13 @@
 package utilities
 
-import "github.com/gofiber/fiber"
+import (
+	"github.com/gofiber/fiber"
+)
 
+// Send a response
 func Response(params ResponseParams) {
-	// TODO: don't send the 'data' field if there's no data
-
-	data := params.Data
 	info := params.Info
 	status := params.Status
-
 	if info == "" {
 		info = "OK"
 	}
@@ -17,7 +16,7 @@ func Response(params ResponseParams) {
 	}
 	params.Ctx.Status(params.Status).JSON(
 		fiber.Map{
-			"data":   data,
+			"data":   params.Data,
 			"info":   info,
 			"status": status,
 		},
