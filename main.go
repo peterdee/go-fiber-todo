@@ -2,17 +2,21 @@ package main
 
 import (
 	"log"
+	"os"
 	"strconv"
 
 	"github.com/gofiber/fiber"
 	"github.com/gofiber/fiber/middleware"
 	"github.com/joho/godotenv"
 
+	"go-fiber-todo/apis/index"
+	"go-fiber-todo/apis/todos"
 	"go-fiber-todo/configuration"
+	"go-fiber-todo/database"
 	"go-fiber-todo/utilities"
 )
 
-var todos = []Todo{
+var todoss = []Todo{
 	{
 		Completed: false,
 		Id:        "1",
@@ -52,21 +56,12 @@ func AddTodo(ctx *fiber.Ctx) {
 
 	todo := Todo{
 		Completed: false,
-		Id:        strconv.Itoa(len(todos) + 1),
+		Id:        strconv.Itoa(len(todoss) + 1),
 		Text:      body.Text,
 	}
 
-	todos = append(todos, todo)
-	ctx.Status(fiber.StatusOK).JSON(todos)
-}
-
-func GetAll(ctx *fiber.Ctx) {
-	utilities.Response(utilities.ResponseParams{
-		Ctx:    ctx,
-		Data:   todos,
-		Info:   "OK",
-		Status: fiber.StatusOK,
-	})
+	todoss = append(todoss, todo)
+	ctx.Status(fiber.StatusOK).JSON(todoss)
 }
 
 func GetSingle(ctx *fiber.Ctx) {
@@ -81,9 +76,9 @@ func GetSingle(ctx *fiber.Ctx) {
 	}
 
 	var element Todo
-	for i := range todos {
-		if todos[i].Id == idString {
-			element = todos[i]
+	for i := range todoss {
+		if todoss[i].Id == idString {
+			element = todoss[i]
 			break
 		}
 	}
@@ -133,11 +128,11 @@ func UpdateSingle(ctx *fiber.Ctx) {
 	}
 
 	var element Todo
-	for i := range todos {
-		if todos[i].Id == idString {
-			todos[i].Completed = body.Completed
-			todos[i].Text = body.Text
-			element = todos[i]
+	for i := range todoss {
+		if todoss[i].Id == idString {
+			todoss[i].Completed = body.Completed
+			todoss[i].Text = body.Text
+			element = todoss[i]
 			break
 		}
 	}
@@ -154,15 +149,6 @@ func UpdateSingle(ctx *fiber.Ctx) {
 	ctx.Status(fiber.StatusOK).JSON(element)
 }
 
-func HandleIndex(ctx *fiber.Ctx) {
-	utilities.Response(utilities.ResponseParams{
-		Ctx:    ctx,
-		Info:   "OK",
-		Status: fiber.StatusOK,
-	})
-	return
-}
-
 func main() {
 	// load environment variables
 	envError := godotenv.Load()
@@ -171,24 +157,43 @@ func main() {
 		return
 	}
 
+	// connect to the database
+	dbError := database.Connect()
+	if dbError != nil {
+		log.Fatal(dbError)
+		return
+	}
+
 	app := fiber.New()
 
+	// middlewares
 	app.Use(middleware.Logger())
 
-	app.Get("/", HandleIndex)
+	// available APIs
+	app.Get("/", index.IndexController)
 	app.Post("/add", AddTodo)
-	app.Get("/all", GetAll)
+	app.Get("/api/todos/all", todos.GetAll)
 	app.Get("/single/:id", GetSingle)
 	app.Patch("/single/:id", UpdateSingle)
 
+	// handle 404
+	app.Use(func(ctx *fiber.Ctx) {
+		utilities.Response(utilities.ResponseParams{
+			Ctx:    ctx,
+			Info:   configuration.ResponseMessages.NotFound,
+			Status: fiber.StatusNotFound,
+		})
+	})
+
 	// get the port
-	port, portError := strconv.Atoi(configuration.Port)
+	port := os.Getenv("PORT")
+	portInt, portError := strconv.Atoi(port)
 	if portError != nil {
-		port = 5511
+		portInt = 5511
 	}
 
 	// launch the app
-	launchError := app.Listen(port)
+	launchError := app.Listen(portInt)
 	if launchError != nil {
 		panic(launchError)
 	}
