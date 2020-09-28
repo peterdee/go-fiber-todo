@@ -29,43 +29,6 @@ var todoss = []Todo{
 	},
 }
 
-func GetSingle(ctx *fiber.Ctx) {
-	idString := ctx.Params("id")
-	if idString == "" {
-		utilities.Response(utilities.ResponseParams{
-			Ctx:    ctx,
-			Info:   "MISSING_DATA",
-			Status: fiber.StatusBadRequest,
-		})
-		return
-	}
-
-	var element Todo
-	for i := range todoss {
-		if todoss[i].Id == idString {
-			element = todoss[i]
-			break
-		}
-	}
-
-	if element.Id == "" {
-		utilities.Response(utilities.ResponseParams{
-			Ctx:    ctx,
-			Info:   "TODO_NOT_FOUND",
-			Status: fiber.StatusNotFound,
-		})
-		return
-	}
-
-	utilities.Response(utilities.ResponseParams{
-		Ctx:    ctx,
-		Data:   element,
-		Info:   "OK",
-		Status: fiber.StatusOK,
-	})
-	return
-}
-
 func UpdateSingle(ctx *fiber.Ctx) {
 	idString := ctx.Params("id")
 	if idString == "" {
@@ -135,11 +98,12 @@ func main() {
 	app.Use(middleware.Logger())
 
 	// available APIs
-	app.Get("/", index.IndexController)
+	app.Get("/api", index.IndexController)
 	app.Post("/api/todos/add", todos.CreateNew)
 	app.Get("/api/todos/all", todos.GetAll)
-	app.Get("/single/:id", GetSingle)
-	app.Patch("/single/:id", UpdateSingle)
+	// app.Delete("/api/todos/delete/:id", todos.Delete)
+	app.Get("/api/todos/get/:id", todos.GetSingle)
+	// app.Patch("/api/todos/update/:id", todos.UpdateSingle)
 
 	// handle 404
 	app.Use(func(ctx *fiber.Ctx) {
