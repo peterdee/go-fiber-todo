@@ -4,6 +4,5 @@ package models
 type Todo struct {
 	Completed bool   `json:"completed"`
 	ID        string `json:"id,omitempty" bson:"_id,omitempty"`
-	OwnerId   string `json:"ownerId"`
 	Text      string `json:"text"`
 }

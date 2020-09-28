@@ -1,6 +1,6 @@
 ## go-fiber-todo
 
-A simple TODO application with Go
+A simple TODO application with Golang, Fiber and MongoDB
 
 Stack: [Fiber](https://gofiber.io/), [Golang](https://golang.org/), [MongoDB](https://www.mongodb.com/)
 

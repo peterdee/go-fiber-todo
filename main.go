@@ -29,41 +29,6 @@ var todoss = []Todo{
 	},
 }
 
-func AddTodo(ctx *fiber.Ctx) {
-	type request struct {
-		Text string `json:"text"`
-	}
-
-	var body request
-	error := ctx.BodyParser(&body)
-	if error != nil {
-		ctx.Status(fiber.StatusBadRequest).JSON(
-			fiber.Map{
-				"error": error,
-			},
-		)
-		return
-	}
-
-	if body.Text == "" {
-		ctx.Status(fiber.StatusBadRequest).JSON(
-			fiber.Map{
-				"info": "MISSING_DATA",
-			},
-		)
-		return
-	}
-
-	todo := Todo{
-		Completed: false,
-		Id:        strconv.Itoa(len(todoss) + 1),
-		Text:      body.Text,
-	}
-
-	todoss = append(todoss, todo)
-	ctx.Status(fiber.StatusOK).JSON(todoss)
-}
-
 func GetSingle(ctx *fiber.Ctx) {
 	idString := ctx.Params("id")
 	if idString == "" {
@@ -171,7 +136,7 @@ func main() {
 
 	// available APIs
 	app.Get("/", index.IndexController)
-	app.Post("/add", AddTodo)
+	app.Post("/api/todos/add", todos.CreateNew)
 	app.Get("/api/todos/all", todos.GetAll)
 	app.Get("/single/:id", GetSingle)
 	app.Patch("/single/:id", UpdateSingle)
