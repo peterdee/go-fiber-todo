@@ -35,6 +35,19 @@ func UpdateSingle(ctx *fiber.Ctx) {
 		return
 	}
 
+	// parse body
+	var body UpdateTodoRequest
+	parsingError := ctx.BodyParser(&body)
+	// TODO: parsing error can be caused by invalid data format
+	if parsingError != nil {
+		utilities.Response(utilities.ResponseParams{
+			Ctx:    ctx,
+			Info:   configuration.ResponseMessages.InvalidData,
+			Status: fiber.StatusBadRequest,
+		})
+		return
+	}
+
 	// get collection
 	collection := Instance.Database.Collection("Todos")
 
@@ -52,12 +65,32 @@ func UpdateSingle(ctx *fiber.Ctx) {
 		return
 	}
 
-	// update the record TODO: create controller
+	// update the record
+	updateText := body.Text
+	if updateText == "" {
+		updateText = record.Text
+	}
+	update := bson.D{
+		{Key: "$set",
+			Value: bson.D{
+				{Key: "completed", Value: body.Completed},
+				{Key: "text", Value: updateText},
+			},
+		},
+	}
+	_, updateError := collection.UpdateOne(ctx.Fasthttp, query, update)
+	if updateError != nil {
+		utilities.Response(utilities.ResponseParams{
+			Ctx:    ctx,
+			Info:   configuration.ResponseMessages.InternalServerError,
+			Status: fiber.StatusInternalServerError,
+		})
+		return
+	}
 
 	utilities.Response(utilities.ResponseParams{
 		Ctx:    ctx,
-		Data:   record,
-		Info:   "OK",
+		Info:   configuration.ResponseMessages.Ok,
 		Status: fiber.StatusOK,
 	})
 	return

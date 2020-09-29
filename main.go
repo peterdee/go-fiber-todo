@@ -103,7 +103,7 @@ func main() {
 	app.Get("/api/todos/all", todos.GetAll)
 	// app.Delete("/api/todos/delete/:id", todos.Delete)
 	app.Get("/api/todos/get/:id", todos.GetSingle)
-	// app.Patch("/api/todos/update/:id", todos.UpdateSingle)
+	app.Patch("/api/todos/update/:id", todos.UpdateSingle)
 
 	// handle 404
 	app.Use(func(ctx *fiber.Ctx) {
