@@ -101,7 +101,7 @@ func main() {
 	app.Get("/api", index.IndexController)
 	app.Post("/api/todos/add", todos.CreateNew)
 	app.Get("/api/todos/all", todos.GetAll)
-	// app.Delete("/api/todos/delete/:id", todos.Delete)
+	app.Delete("/api/todos/delete/:id", todos.DeleteSingle)
 	app.Get("/api/todos/get/:id", todos.GetSingle)
 	app.Patch("/api/todos/update/:id", todos.UpdateSingle)
 
