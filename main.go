@@ -16,67 +16,6 @@ import (
 	"go-fiber-todo/utilities"
 )
 
-var todoss = []Todo{
-	{
-		Completed: false,
-		Id:        "1",
-		Text:      "Todo number 1",
-	},
-	{
-		Completed: true,
-		Id:        "2",
-		Text:      "Todo number 2",
-	},
-}
-
-func UpdateSingle(ctx *fiber.Ctx) {
-	idString := ctx.Params("id")
-	if idString == "" {
-		ctx.Status(fiber.StatusBadRequest).JSON(
-			fiber.Map{
-				"info": "MISSING_DATA",
-			},
-		)
-		return
-	}
-
-	type request struct {
-		Completed bool   `json:"completed"`
-		Text      string `json:"text"`
-	}
-	var body request
-	error := ctx.BodyParser(&body)
-	if error != nil {
-		ctx.Status(fiber.StatusBadRequest).JSON(
-			fiber.Map{
-				"error": error,
-			},
-		)
-		return
-	}
-
-	var element Todo
-	for i := range todoss {
-		if todoss[i].Id == idString {
-			todoss[i].Completed = body.Completed
-			todoss[i].Text = body.Text
-			element = todoss[i]
-			break
-		}
-	}
-
-	if element.Id == "" {
-		ctx.Status(fiber.StatusBadRequest).JSON(
-			fiber.Map{
-				"info": "TODO_NOT_FOUND",
-			},
-		)
-		return
-	}
-
-	ctx.Status(fiber.StatusOK).JSON(element)
-}
-
 func main() {
 	// load environment variables
 	envError := godotenv.Load()
@@ -96,6 +35,9 @@ func main() {
 
 	// middlewares
 	app.Use(middleware.Logger())
+
+	// serve static files
+	app.Static("/", "./public")
 
 	// available APIs
 	app.Get("/api", index.IndexController)
