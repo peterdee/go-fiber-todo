@@ -11,6 +11,7 @@ import (
 
 	"go-fiber-todo/apis/index"
 	"go-fiber-todo/apis/todos"
+	"go-fiber-todo/apis/views"
 	"go-fiber-todo/configuration"
 	"go-fiber-todo/database"
 	"go-fiber-todo/utilities"
@@ -43,6 +44,9 @@ func main() {
 
 	// serve static files
 	app.Static("/", "./public")
+
+	// views
+	app.Get("/", views.IndexView)
 
 	// available APIs
 	app.Get("/api", index.IndexController)

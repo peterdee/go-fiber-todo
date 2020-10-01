@@ -1,3 +1,16 @@
 {{template "partials/header" .}}
 <h1>Views engine</h1>
+{{range .Todos}}
+<div>
+  <div>
+    Id: {{.ID}}
+  </div>
+  <div>
+    Text: {{.Text}}
+  </div>
+  <div>
+    Completed: {{.Completed}}
+  </div>
+</div>
+{{end}}
 {{template "partials/footer" .}}

@@ -1,4 +1,4 @@
-package todos
+package views
 
 import (
 	"github.com/gofiber/fiber/v2"
@@ -10,8 +10,8 @@ import (
 	"go-fiber-todo/utilities"
 )
 
-// get all Todo records
-func GetAll(ctx *fiber.Ctx) error {
+// Send an index view to the frontend
+func IndexView(ctx *fiber.Ctx) error {
 	// load records
 	query := bson.D{{}}
 	cursor, queryError := Instance.Database.Collection("Todos").Find(ctx.Context(), query)
@@ -35,10 +35,7 @@ func GetAll(ctx *fiber.Ctx) error {
 	}
 
 	// send response
-	return utilities.Response(utilities.ResponseParams{
-		Ctx:    ctx,
-		Data:   todos,
-		Info:   configuration.ResponseMessages.Ok,
-		Status: fiber.StatusOK,
-	})
+	return ctx.Render("index", fiber.Map{
+		"Todos": todos,
+	}, "layouts/main")
 }
