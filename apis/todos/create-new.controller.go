@@ -1,7 +1,7 @@
 package todos
 
 import (
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 
 	"go-fiber-todo/configuration"
@@ -11,26 +11,24 @@ import (
 )
 
 // Create a new Todo record
-func CreateNew(ctx *fiber.Ctx) {
+func CreateNew(ctx *fiber.Ctx) error {
 	// check data
 	var body CreateTodoRequest
 	parsingError := ctx.BodyParser(&body)
 	if parsingError != nil {
-		utilities.Response(utilities.ResponseParams{
+		return utilities.Response(utilities.ResponseParams{
 			Ctx:    ctx,
 			Info:   configuration.ResponseMessages.InternalServerError,
 			Status: fiber.StatusInternalServerError,
 		})
-		return
 	}
 
 	if body.Text == "" {
-		utilities.Response(utilities.ResponseParams{
+		return utilities.Response(utilities.ResponseParams{
 			Ctx:    ctx,
 			Info:   configuration.ResponseMessages.MissingData,
 			Status: fiber.StatusBadRequest,
 		})
-		return
 	}
 
 	collection := Instance.Database.Collection("Todos")
@@ -38,12 +36,11 @@ func CreateNew(ctx *fiber.Ctx) {
 	// create a new record
 	todo := new(Todo)
 	if errorParsing := ctx.BodyParser(todo); errorParsing != nil {
-		utilities.Response(utilities.ResponseParams{
+		return utilities.Response(utilities.ResponseParams{
 			Ctx:    ctx,
 			Info:   configuration.ResponseMessages.InternalServerError,
 			Status: fiber.StatusInternalServerError,
 		})
-		return
 	}
 
 	// insert the record
@@ -51,12 +48,11 @@ func CreateNew(ctx *fiber.Ctx) {
 	todo.ID = ""
 	insertionResult, insertError := collection.InsertOne(ctx.Context(), todo)
 	if insertError != nil {
-		utilities.Response(utilities.ResponseParams{
+		return utilities.Response(utilities.ResponseParams{
 			Ctx:    ctx,
 			Info:   configuration.ResponseMessages.InternalServerError,
 			Status: fiber.StatusInternalServerError,
 		})
-		return
 	}
 
 	filter := bson.D{{Key: "_id", Value: insertionResult.InsertedID}}
@@ -64,11 +60,10 @@ func CreateNew(ctx *fiber.Ctx) {
 	createdTodo := &Todo{}
 	createdRecord.Decode(createdTodo)
 
-	utilities.Response(utilities.ResponseParams{
+	return utilities.Response(utilities.ResponseParams{
 		Ctx:    ctx,
 		Data:   createdTodo,
 		Info:   configuration.ResponseMessages.Ok,
 		Status: fiber.StatusOK,
 	})
-	return
 }

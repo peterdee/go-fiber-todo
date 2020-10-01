@@ -1,7 +1,7 @@
 package todos
 
 import (
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
@@ -12,25 +12,23 @@ import (
 )
 
 // Get a single Todo record
-func GetSingle(ctx *fiber.Ctx) {
+func GetSingle(ctx *fiber.Ctx) error {
 	id := ctx.Params("id")
 	if id == "" {
-		utilities.Response(utilities.ResponseParams{
+		return utilities.Response(utilities.ResponseParams{
 			Ctx:    ctx,
 			Info:   configuration.ResponseMessages.MissingData,
 			Status: fiber.StatusBadRequest,
 		})
-		return
 	}
 
 	todoId, parseError := primitive.ObjectIDFromHex(id)
 	if parseError != nil {
-		utilities.Response(utilities.ResponseParams{
+		return utilities.Response(utilities.ResponseParams{
 			Ctx:    ctx,
 			Info:   configuration.ResponseMessages.NotFound,
 			Status: fiber.StatusNotFound,
 		})
-		return
 	}
 
 	collection := Instance.Database.Collection("Todos")
@@ -41,19 +39,17 @@ func GetSingle(ctx *fiber.Ctx) {
 	rawRecord.Decode(record)
 
 	if record.ID == "" {
-		utilities.Response(utilities.ResponseParams{
+		return utilities.Response(utilities.ResponseParams{
 			Ctx:    ctx,
 			Info:   configuration.ResponseMessages.NotFound,
 			Status: fiber.StatusNotFound,
 		})
-		return
 	}
 
-	utilities.Response(utilities.ResponseParams{
+	return utilities.Response(utilities.ResponseParams{
 		Ctx:    ctx,
 		Data:   record,
 		Info:   "OK",
 		Status: fiber.StatusOK,
 	})
-	return
 }

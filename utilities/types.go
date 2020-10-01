@@ -1,6 +1,6 @@
 package utilities
 
-import "github.com/gofiber/fiber"
+import "github.com/gofiber/fiber/v2"
 
 type ResponseParams struct {
 	Ctx    *fiber.Ctx

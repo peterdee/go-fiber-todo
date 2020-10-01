@@ -3,10 +3,10 @@ package main
 import (
 	"log"
 	"os"
-	"strconv"
 
-	"github.com/gofiber/fiber"
-	"github.com/gofiber/fiber/middleware"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/template/html"
 	"github.com/joho/godotenv"
 
 	"go-fiber-todo/apis/index"
@@ -31,10 +31,15 @@ func main() {
 		return
 	}
 
-	app := fiber.New()
+	// create a new views engine
+	engine := html.New("./views", ".html")
+
+	app := fiber.New(fiber.Config{
+		Views: engine,
+	})
 
 	// middlewares
-	app.Use(middleware.Logger())
+	app.Use(logger.New())
 
 	// serve static files
 	app.Static("/", "./public")
@@ -48,8 +53,8 @@ func main() {
 	app.Patch("/api/todos/update/:id", todos.UpdateSingle)
 
 	// handle 404
-	app.Use(func(ctx *fiber.Ctx) {
-		utilities.Response(utilities.ResponseParams{
+	app.Use(func(ctx *fiber.Ctx) error {
+		return utilities.Response(utilities.ResponseParams{
 			Ctx:    ctx,
 			Info:   configuration.ResponseMessages.NotFound,
 			Status: fiber.StatusNotFound,
@@ -58,13 +63,12 @@ func main() {
 
 	// get the port
 	port := os.Getenv("PORT")
-	portInt, portError := strconv.Atoi(port)
-	if portError != nil {
-		portInt = 5511
+	if port == "" {
+		port = ":5511"
 	}
 
 	// launch the app
-	launchError := app.Listen(portInt)
+	launchError := app.Listen(port)
 	if launchError != nil {
 		panic(launchError)
 	}
