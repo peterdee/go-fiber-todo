@@ -1,3 +1,16 @@
+/* Reset styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* CSS variables */
+:root {
+  --link: maroon;
+  --link-hover: rgb(110, 68, 68);
+}
+
 footer {
   font-size: 10px;
 }
@@ -8,6 +21,22 @@ header {
 .flex {
   display: flex;
 }
+.direction-column {
+  flex-direction: column;
+}
 .justify-content-center {
   justify-content: center;
+}
+.justify-content-space-between {
+  justify-content: space-between;
+}
+.margin-0-auto {
+  margin: 0 auto;
+}
+.mb-16 {
+  margin-bottom: 16px;
+}
+
+.wrapper {
+  min-height: 100vh;
 }

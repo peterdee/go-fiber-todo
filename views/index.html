@@ -1,16 +1,41 @@
 {{template "partials/header" .}}
-<h1>Views engine</h1>
-{{range .Todos}}
-<div>
-  <div>
-    Id: {{.ID}}
+<form
+  class="mb-16"
+  id="todo-form"
+>
+  <input
+    id="todo-input"
+    name="todo-input"
+    type="text"
+  />
+  <button
+    id="todo-submit"
+    type="submit"
+  >
+    Add
+  </button>
+  <div id="todo-error"></div>
+</form>
+<div id="todos-list">
+  {{range .Todos}}
+  <div
+    id="todo-{{.ID}}"
+    class="flex justify-content-space-between mb-16"
+  >
+    <div>
+      {{.Text}}
+    </div>
+    <div>
+      Completed: {{.Completed}}
+    </div>
+    <button
+      class="delete-todo"
+      id="todo-delete-{{.ID}}"
+      type="button"
+    >
+      Delete
+    </button>
   </div>
-  <div>
-    Text: {{.Text}}
-  </div>
-  <div>
-    Completed: {{.Completed}}
-  </div>
+  {{end}}
 </div>
-{{end}}
 {{template "partials/footer" .}}
