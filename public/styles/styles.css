@@ -1,3 +1,13 @@
+/* CSS variables */
+:root {
+  --accent: #4365AF;
+  --accent-highlight: #5476FF;
+  --link: maroon;
+  --link-hover: rgb(110, 68, 68);
+  --paper: #F0F0F0;
+  --paper-disabled: #A0A0A0;
+}
+
 /* Reset styles */
 * {
   box-sizing: border-box;
@@ -5,10 +15,20 @@
   padding: 0;
 }
 
-/* CSS variables */
-:root {
-  --link: maroon;
-  --link-hover: rgb(110, 68, 68);
+input {
+  background-color: var(--paper);
+  border: none;
+  border-bottom: 2px solid var(--accent);
+  font-size: 16px;
+  height: 48px;
+  padding: 0 16px;
+}
+input:focus {
+  outline: none;
+}
+input:disabled {
+  background-color: var(--paper-disabled);
+  border-bottom: 2px solid var(--paper-disabled);
 }
 
 footer {
@@ -36,7 +56,28 @@ header {
 .mb-16 {
   margin-bottom: 16px;
 }
+.pointer {
+  cursor: pointer;
+}
 
 .wrapper {
   min-height: 100vh;
+}
+.button-add, .button-add:disabled, .button-add:hover {
+  transition: background-color 200ms ease-in;
+}
+.button-add {
+  background-color: var(--accent);
+  border: none;
+  color: white;
+  padding: 16px;
+}
+.button-add:disabled {
+  background-color: var(--paper-disabled);
+}
+.button-add:focus {
+  outline: none;
+}
+.button-add:hover {
+  background-color: var(--accent-highlight);
 }
