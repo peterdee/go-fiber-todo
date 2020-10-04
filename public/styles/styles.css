@@ -2,10 +2,9 @@
 :root {
   --accent: #4365AF;
   --accent-highlight: #5476FF;
-  --link: maroon;
-  --link-hover: rgb(110, 68, 68);
   --paper: #F0F0F0;
   --paper-disabled: #A0A0A0;
+  --red: maroon;
 }
 
 /* Reset styles */
@@ -15,6 +14,13 @@
   padding: 0;
 }
 
+
+a {
+  color: var(--accent);
+}
+a:hover {
+  color: var(--accent-highlight);
+}
 input {
   background-color: var(--paper);
   border: none;
@@ -22,6 +28,7 @@ input {
   font-size: 16px;
   height: 48px;
   padding: 0 16px;
+  width: 100%;
 }
 input:focus {
   outline: none;
@@ -35,7 +42,9 @@ footer {
   font-size: 10px;
 }
 header {
-  font-size: 24px;
+  color: var(--accent);
+  margin-top: 24px;
+  margin-bottom: 16px;
 }
 
 .flex {
@@ -53,15 +62,29 @@ header {
 .margin-0-auto {
   margin: 0 auto;
 }
+.fs-12 {
+  font-size: 12px;
+}
+.fs-24 {
+  font-size: 24px;
+}
 .mb-16 {
   margin-bottom: 16px;
 }
 .pointer {
   cursor: pointer;
 }
+.text-center {
+  text-align: center;
+}
 
 .wrapper {
   min-height: 100vh;
+  width: 400px;
+}
+.todo-error {
+  color: var(--red);
+  height: 48px;
 }
 .button-add, .button-add:disabled, .button-add:hover {
   transition: background-color 200ms ease-in;

@@ -1,6 +1,6 @@
 {{template "partials/header" .}}
 <form
-  class="mb-16"
+  class="flex justify-content-space-between mb-16"
   id="todo-form"
 >
   <input
@@ -15,8 +15,11 @@
   >
     Add
   </button>
-  <div id="todo-error"></div>
 </form>
+<div
+  class="todo-error text-center"
+  id="todo-error"
+></div>
 <div id="todos-list">
   {{range .Todos}}
   <div
