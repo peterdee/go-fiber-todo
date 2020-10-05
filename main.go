@@ -18,11 +18,14 @@ import (
 )
 
 func main() {
-	// load environment variables
-	envError := godotenv.Load()
-	if envError != nil {
-		log.Fatal(envError)
-		return
+	// load environment variables via the .env file
+	env := os.Getenv("ENV")
+	if env != "heroku" {
+		envError := godotenv.Load()
+		if envError != nil {
+			log.Fatal(envError)
+			return
+		}
 	}
 
 	// connect to the database
@@ -68,11 +71,11 @@ func main() {
 	// get the port
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = ":5511"
+		port = "5511"
 	}
 
 	// launch the app
-	launchError := app.Listen(port)
+	launchError := app.Listen(":" + port)
 	if launchError != nil {
 		panic(launchError)
 	}

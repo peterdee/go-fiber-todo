@@ -1,1 +1,1 @@
-web: bin/golang-todo
+web: bin/go-fiber-todo
