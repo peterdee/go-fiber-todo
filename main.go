@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -74,6 +75,7 @@ func main() {
 		port = ":5511"
 	}
 
+	fmt.Println("port", port)
 	// launch the app
 	launchError := app.Listen(port)
 	if launchError != nil {
