@@ -1,4 +1,3 @@
-{{template "partials/header" .}}
 <form
   class="flex justify-content-space-between mb-16"
   id="todo-form"
@@ -23,23 +22,28 @@
 <div id="todos-list">
   {{range .Todos}}
   <div
+    class="flex justify-content-space-between align-items-center mb-16 text-left todo-item"
     id="todo-{{.ID}}"
-    class="flex justify-content-space-between mb-16"
   >
-    <div>
-      {{.Text}}
-    </div>
-    <div>
-      Completed: {{.Completed}}
-    </div>
     <button
-      class="delete-todo"
+      class="complete-todo pointer text-left{{if .Completed}} completed{{end}}"
+      id="{{.ID}}"
+      type="button"
+    >
+      {{.Text}}
+    </button>
+    <button
+      class="delete-todo-button pointer"
       id="todo-delete-{{.ID}}"
       type="button"
     >
-      Delete
+      <img
+        alt="Delete item"
+        class="delete-todo"
+        id="todo-delete-{{.ID}}"
+        src="/assets/delete.svg"
+      />
     </button>
   </div>
   {{end}}
 </div>
-{{template "partials/footer" .}}

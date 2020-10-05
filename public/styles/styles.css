@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;600&display=swap');
+
 /* CSS variables */
 :root {
   --accent: #4365AF;
@@ -10,6 +12,7 @@
 /* Reset styles */
 * {
   box-sizing: border-box;
+  font-family: 'Source Sans Pro', sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -25,6 +28,7 @@ input {
   background-color: var(--paper);
   border: none;
   border-bottom: 2px solid var(--accent);
+  border-radius: 8px 0 0 8px;
   font-size: 16px;
   height: 48px;
   padding: 0 16px;
@@ -39,7 +43,7 @@ input:disabled {
 }
 
 footer {
-  font-size: 10px;
+  height: 32px;
 }
 header {
   color: var(--accent);
@@ -49,6 +53,9 @@ header {
 
 .flex {
   display: flex;
+}
+.align-items-center {
+  align-items: center;
 }
 .direction-column {
   flex-direction: column;
@@ -77,23 +84,28 @@ header {
 .text-center {
   text-align: center;
 }
+.text-left {
+  text-align: left;
+}
 
 .wrapper {
-  min-height: 100vh;
+  min-height: calc(100vh - 32px);
   width: 400px;
 }
 .todo-error {
   color: var(--red);
-  height: 48px;
+  height: 32px;
 }
 .button-add, .button-add:disabled, .button-add:hover {
   transition: background-color 200ms ease-in;
 }
 .button-add {
   background-color: var(--accent);
+  border-radius: 0 8px 8px 0;
   border: none;
   color: white;
-  padding: 16px;
+  height: 48px;
+  padding: 0 16px;
 }
 .button-add:disabled {
   background-color: var(--paper-disabled);
@@ -103,4 +115,28 @@ header {
 }
 .button-add:hover {
   background-color: var(--accent-highlight);
+}
+.todo-item {
+  background-color: var(--paper);
+  border-radius: 8px;
+  color: black;
+  min-height: 48px;
+  padding: 8px;
+}
+.complete-todo {
+  border: none;
+  outline: none;
+}
+.delete-todo, .delete-todo-button {
+  height: 24px;
+  width: 24px;
+}
+.delete-todo-button {
+  border: none;
+  margin: 0;
+  outline: none;
+  padding: 0;
+}
+.completed {
+  text-decoration: line-through;
 }

@@ -1,5 +1,30 @@
+/**
+ * Handle Todo item click (change the 'completed' status)
+ * @param {*} event - click event
+ */
 const handleComplete = async (event) => {
+  const { id = '' } = event.target;
+  if (!id) {
+    return $('#todo-error').append('Error deleting an item!');
+  }
 
+  const completed = $(`#${id}`).attr('class').split(' ').includes('completed');
+
+  try {
+    // send a request
+    await $.ajax({
+      data: {
+        completed: !completed,
+      },
+      method: 'PATCH',
+      url: `/api/todos/update/${id}`,
+    });
+
+    // reload the page
+    return window.location.reload();
+  } catch {
+    return $('#todo-error').append('Error deleting an item!');
+  }
 };
 
 /**
@@ -30,7 +55,7 @@ const handleDelete = async (event) => {
 
     // remove an element from the DOM
     return $(`#todo-${id}`).remove();
-  } catch (error) {
+  } catch {
     return $('#todo-error').append('Error deleting an item!');
   }
 };
@@ -55,7 +80,7 @@ const handleSubmit = async (event) => {
 
   // send a request
   try {
-    const { data } = await $.ajax({
+    await $.ajax({
       data: {
         text,
       },
@@ -63,27 +88,8 @@ const handleSubmit = async (event) => {
       url: '/api/todos/add',
     });
 
-    // add an element to the list
-    return $('#todos-list').append(`
-<div
-  id="todo-${data.id}"
-  class="flex justify-content-space-between mb-16"
->
-  <div>
-    ${data.text}
-  </div>
-  <div>
-    Completed: ${data.completed}
-  </div>
-  <button
-    class="delete-todo"
-    id="todo-delete-${data.id}"
-    type="button"
-  >
-    Delete
-  </button>
-</div>
-    `);
+    // reload the page
+    return window.location.reload();
   } catch (error) {
     return $('#todo-error').append('Error adding an item!');
   }
@@ -93,7 +99,7 @@ const handleSubmit = async (event) => {
  * On page load
  */
 $(document).ready(() => {
-  $('.complete-todo').on('submit', handleComplete);
+  $('.complete-todo').on('click', handleComplete);
   $('.delete-todo').on('click', handleDelete);
   $('#todo-form').on('submit', handleSubmit);
 });

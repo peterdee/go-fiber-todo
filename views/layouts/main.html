@@ -27,7 +27,9 @@
   </head>
   <body>
     <div class="flex direction-column margin-0-auto wrapper">
+      {{template "partials/header" .}}
       {{embed}}
     </div>
+    {{template "partials/footer" .}}
   </body>
 </html>
