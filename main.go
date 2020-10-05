@@ -72,12 +72,12 @@ func main() {
 	// get the port
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = ":5511"
+		port = "5511"
 	}
 
 	fmt.Println("port", port)
 	// launch the app
-	launchError := app.Listen(port)
+	launchError := app.Listen(":" + port)
 	if launchError != nil {
 		panic(launchError)
 	}
