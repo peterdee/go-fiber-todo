@@ -1,1 +1,1 @@
-web: bin/golang-todo
+web: go run ./
