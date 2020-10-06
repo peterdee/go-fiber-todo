@@ -32,18 +32,32 @@
     >
       {{.Text}}
     </button>
-    <button
-      class="delete-todo-button pointer noselect"
-      id="todo-delete-{{.ID}}"
-      type="button"
-    >
-      <img
-        alt="Delete item"
-        class="delete-todo noselect"
+    <div class="flex justify-content-space-between controls">
+      <button
+        class="delete-todo-button pointer noselect mr-8"
+        id="todo-edit-{{.ID}}"
+        type="button"
+      >
+        <img
+          alt="Edit item"
+          class="edit-todo noselect"
+          id="todo-edit-{{.ID}}"
+          src="/assets/edit.svg"
+        />
+      </button>
+      <button
+        class="delete-todo-button pointer noselect"
         id="todo-delete-{{.ID}}"
-        src="/assets/delete.svg"
-      />
-    </button>
+        type="button"
+      >
+        <img
+          alt="Delete item"
+          class="delete-todo noselect"
+          id="todo-delete-{{.ID}}"
+          src="/assets/delete.svg"
+        />
+      </button>
+    </div>
   </div>
   {{end}}
 </div>
