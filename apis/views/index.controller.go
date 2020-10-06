@@ -34,8 +34,17 @@ func IndexView(ctx *fiber.Ctx) error {
 		})
 	}
 
-	// send response
-	return ctx.Render("index", fiber.Map{
-		"Todos": todos,
-	}, "layouts/main")
+	// caclulate the latency
+	initial := ctx.Context().Time()
+	latency := utilities.MakeTimestamp() - (initial.UnixNano() / 1e6)
+
+	// send response: render the page
+	return ctx.Render(
+		"index",
+		fiber.Map{
+			"Latency": latency,
+			"Todos":   todos,
+		},
+		"layouts/main",
+	)
 }

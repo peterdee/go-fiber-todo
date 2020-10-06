@@ -77,6 +77,9 @@ header {
 .mb-16 {
   margin-bottom: 16px;
 }
+.mr-16 {
+  margin-right: 16px;
+}
 .pointer {
   cursor: pointer;
 }
@@ -97,6 +100,9 @@ header {
 .wrapper {
   min-height: calc(100vh - 32px);
   width: 400px;
+}
+.logo {
+  height: 20px;
 }
 .todo-error {
   color: var(--red);
