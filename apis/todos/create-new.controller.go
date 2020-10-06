@@ -45,6 +45,7 @@ func CreateNew(ctx *fiber.Ctx) error {
 
 	// insert the record
 	todo.Completed = false
+	todo.Created = utilities.MakeTimestamp()
 	todo.ID = ""
 	insertionResult, insertError := collection.InsertOne(ctx.Context(), todo)
 	if insertError != nil {

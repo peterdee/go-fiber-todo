@@ -1,5 +1,5 @@
 <form
-  class="flex justify-content-space-between mb-16"
+  class="flex justify-content-space-between mb-16 noselect"
   id="todo-form"
 >
   <input
@@ -16,7 +16,7 @@
   </button>
 </form>
 <div
-  class="todo-error text-center"
+  class="todo-error text-center noselect"
   id="todo-error"
 ></div>
 <div id="todos-list">
@@ -33,13 +33,13 @@
       {{.Text}}
     </button>
     <button
-      class="delete-todo-button pointer"
+      class="delete-todo-button pointer noselect"
       id="todo-delete-{{.ID}}"
       type="button"
     >
       <img
         alt="Delete item"
-        class="delete-todo"
+        class="delete-todo noselect"
         id="todo-delete-{{.ID}}"
         src="/assets/delete.svg"
       />
