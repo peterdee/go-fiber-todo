@@ -7,6 +7,7 @@
   --paper: #F0F0F0;
   --paper-disabled: #A0A0A0;
   --red: maroon;
+  --green: rgb(0, 219, 135);
 }
 
 /* Reset styles */
@@ -70,6 +71,9 @@ header {
 }
 .fs-12 {
   font-size: 12px;
+}
+.fs-20 {
+  font-size: 20px;
 }
 .fs-24 {
   font-size: 24px;
@@ -139,7 +143,7 @@ header {
   border: none;
   outline: none;
 }
-.delete-todo, .delete-todo-button {
+.delete-todo, .edit-todo, .delete-todo-button {
   height: 24px;
   width: 24px;
 }
@@ -151,4 +155,64 @@ header {
 }
 .completed {
   text-decoration: line-through;
+}
+.controls {
+  width: 60px;
+}
+
+/* Modal */
+.background {
+  background-color: #000000;
+  height: 100vh;
+  opacity: 0.5;
+  position: absolute;
+  width: 100%;
+}
+.modal-window {
+  background-color: white;
+  border-radius: 16px;
+  height: 256px;
+  left: calc(50% - 180px);
+  position: absolute;
+  padding: 16px;
+  top: calc(50% - 158px);
+  width: 360px;
+}
+.edit-textarea {
+  background-color: var(--paper);
+  border: 2px solid var(--accent);
+  height: 96px;
+  padding: 16px;
+  resize: none;
+  width: 100%;
+}
+.edit-button, .success:hover, .success:disabled, .fail:hover {
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  height: 32px;
+  outline: none;
+  padding: 0 16px;
+  transition: background-color 200ms ease-in, color 200ms ease-in;
+  width: 112px;
+}
+.success {
+  border: 2px solid var(--accent);
+  color: var(--accent);
+}
+.fail {
+  border: 2px solid var(--red);
+  color: var(--red);
+}
+.success:hover {
+  background-color: var(--accent-highlight);
+  color: white;
+}
+.fail:hover {
+  background-color: var(--red);
+  color: white;
+}
+.success:disabled {
+  background-color: var(--paper-disabled);
+  color: white;
 }
