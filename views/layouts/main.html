@@ -18,12 +18,10 @@
       property="og:description"
     />
     <meta
-      content="/img/logo.png"
+      content="/assets/logo.svg"
       property="og:image"
     />  
     <title>Todo application</title>
-    <script defer src="/js/jq.js"></script>
-    <script defer src="/js/index.js"></script>
   </head>
   <body>
     <div class="flex direction-column margin-0-auto wrapper">
@@ -31,5 +29,7 @@
       {{embed}}
     </div>
     {{template "partials/footer" .}}
+    <script defer src="/js/jq.js"></script>
+    <script defer src="/js/index.js"></script>
   </body>
 </html>
