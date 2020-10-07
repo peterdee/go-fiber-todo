@@ -61,7 +61,7 @@ const handleEdit = async (event) => {
 
   try {
     // load an item when opening a modal
-    const { data: { text = '' } = {} } = await $.ajax({
+    const { data: { completed = false, text = '' } = {} } = await $.ajax({
       method: 'GET',
       url: `/api/todos/get/${id}`,
     });
@@ -73,17 +73,23 @@ const handleEdit = async (event) => {
     $('#edit-form').on('submit', async (event) => {
       event.preventDefault();
 
+      const newText = $('#edit-textarea').val();
+      if (!(newText && newText.trim())) {
+        return;
+      }
+
       try {
         await $.ajax({
           data: {
-            text: ,
+            completed,
+            text: newText,
           },
           method: 'PATCH',
           url: `/api/todos/update/${id}`,
         });
   
-        // close the modal
-        return $('#modals').empty();
+        // reload the page
+        return window.location.reload();
       } catch {
         // show the error and disable the form
         $('#edit-error').empty().append('Error updating the data!');
