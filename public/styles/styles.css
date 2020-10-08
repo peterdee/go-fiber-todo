@@ -72,6 +72,9 @@ header {
 .fs-12 {
   font-size: 12px;
 }
+.fs-16 {
+  font-size: 16px;
+}
 .fs-20 {
   font-size: 20px;
 }
@@ -205,6 +208,7 @@ header {
   border: 2px solid var(--accent);
   border-radius: 8px;
   height: 96px;
+  outline: none;
   padding: 16px;
   resize: none;
   width: 100%;

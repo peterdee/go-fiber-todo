@@ -26,7 +26,7 @@ const handleEdit = async (event) => {
   </div>
   <form id="edit-form">
     <textarea
-      class="edit-textarea mb-16"
+      class="edit-textarea fs-16 mb-16"
       id="edit-textarea"
     ></textarea>
     <div
