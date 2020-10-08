@@ -33,7 +33,7 @@ const handleEdit = async (event) => {
       class="todo-error text-center noselect"
       id="edit-error"
     ></div>
-    <div class="flex justify-content-space-between">
+    <div class="flex justify-content-space-between noselect">
       <button
         class="edit-button success"
         id="edit-save"

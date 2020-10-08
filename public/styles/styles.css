@@ -161,14 +161,35 @@ header {
 }
 
 /* Modal */
+@keyframes background-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+@keyframes modal-window-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 .background {
+  animation-duration: 250ms;
+  animation-name: background-in;
   background-color: #000000;
   height: 100vh;
   opacity: 0.5;
   position: absolute;
   width: 100%;
+  z-index: 10;
 }
 .modal-window {
+  animation-duration: 250ms;
+  animation-name: modal-window-in;
   background-color: white;
   border-radius: 16px;
   height: 256px;
@@ -177,10 +198,12 @@ header {
   padding: 16px;
   top: calc(50% - 158px);
   width: 360px;
+  z-index: 11;
 }
 .edit-textarea {
   background-color: var(--paper);
   border: 2px solid var(--accent);
+  border-radius: 8px;
   height: 96px;
   padding: 16px;
   resize: none;
